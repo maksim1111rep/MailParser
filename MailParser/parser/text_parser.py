@@ -9,22 +9,22 @@ def parse(text: str) -> Mail:
         line = lines[i]
         if line.count(':') == 1:
             line_split = line.split(':')
-            key = line_split[0]
+            key = line_split[0].lower()
             value = line_split[1]
         elif line.count(':') == 2:
             line_split = line.split(':')
-            key = line_split[0]
-            value = line_split[1] + ':' + line_split[2] 
+            key = line_split[0].lower()
+            value = line_split[1] + ':' + line_split[2]
         else:
             mail.body += line + '\n'
             continue
-        if key == 'To' or key == 'Кому':
+        if key == 'to' or key == 'кому':
             mail.receiver = value.strip()
-        elif key == 'From' or key == 'От кого':
+        elif key == 'from' or key == 'от кого':
             mail.sender = value.strip()
-        elif key == 'Date' or key == 'Дата':
+        elif key == 'date' or key == 'дата':
             mail.date = value.strip()
-        elif key == 'Subject' or key == 'Тема':
+        elif key == 'subject' or key == 'тема':
             mail.subject = value.strip()
         else:
             mail.body += line + '\n'
