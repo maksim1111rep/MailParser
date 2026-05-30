@@ -17,6 +17,6 @@ CATEGORY_PRIORITY = {
 CATEGORY_KEYWORDS = {
     Category.CRITICAL: ["критическое", "ужас", "трагедия"],
     Category.IMPORTANT: ["срочно, помогите", "плохо"],
-    Category.AVERAGE: ["доступ, права, договор"],
+    Category.AVERAGE: ["доступ", "права", "договор"],
     Category.UNIMPORTANT: ["скам", "фишинг", "рыбалка"]
 }
