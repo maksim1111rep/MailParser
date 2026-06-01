@@ -2,17 +2,22 @@ import json
 from pathlib import Path
 from MailParser.domain.mail import Mail
 from MailParser.parser import text_parser
-
+from MailParser.logger_configuration import logger
 class FileParser:
     def parse(self, path: Path) -> Mail:
         suffix = path.suffix
         text = ""
+        logger.info(f"Формат файла {suffix if suffix else 'без расширения'}")
         if suffix == '.txt' or suffix == '':
             text = path.read_text(encoding='utf-8')
+            logger.info(f"Файл {path.name} в текстовом формате обработан")
         elif suffix == '.json':
             text = self.read_json(path)
+            logger.info(f"Файл {path.name} в JSON формате обработан")
         else:
-            raise ValueError(f'Неподдерживаемый формат файла: {suffix}')
+            logger.error(f"Встречен неподдерживаемый формат файла {suffix}")
+            raise ValueError(f'Неподдерживаемый формат файла {suffix}')
+        logger.info("Файл отправлен в текстовый парсер")
         return text_parser.parse(text)
 
     def read_json(self, path: Path) -> str:
@@ -20,6 +25,7 @@ class FileParser:
         try:
             data = json.loads(raw_text)
         except json.decoder.JSONDecodeError as e:
+            logger.warning(f"Файл {path.name} не является корректным JSON")
             return raw_text
         if isinstance(data, dict):
             out = ""

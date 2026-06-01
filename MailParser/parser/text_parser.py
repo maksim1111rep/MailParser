@@ -1,7 +1,8 @@
 from MailParser.domain.mail import Mail
-
+from MailParser.logger_configuration import logger
 
 def parse(text: str) -> Mail:
+    logger.info("Начат анализ текста письма")
     mail = Mail()
     lines = text.splitlines()
     mail.body = ''
@@ -17,6 +18,7 @@ def parse(text: str) -> Mail:
             value = line_split[1] + ':' + line_split[2]
         else:
             mail.body += line + '\n'
+            logger.debug(f"В тело письма добавлено {line}")
             continue
         if key == 'to' or key == 'кому':
             mail.receiver = value.strip()
@@ -29,4 +31,5 @@ def parse(text: str) -> Mail:
         else:
             mail.body += line + '\n'
     mail.body = mail.body.strip()
+    logger.info("Разбор письма завершён")
     return mail

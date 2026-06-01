@@ -5,6 +5,8 @@ from MailParser.processor.processor import Processor
 from MailParser.classification.classifier import Classifier
 from MailParser.parser.file_parser import FileParser
 from MailParser.domain.category import Category
+from MailParser.logger_configuration import logging_settings
+from MailParser.logger_configuration import logger
 def create_parser():
     parser=argparse.ArgumentParser(
         prog="MailParser",
@@ -27,6 +29,7 @@ def create_parser():
 def count_mails_in_category(output: Path, category: str)->int:
     path_category=output/category
     count = 0
+    logger.info(f"Начат подсчет писем в категории {category}")
     for path in path_category.iterdir():
         count += 1
     return count
@@ -40,9 +43,12 @@ def get_paths(input: Path)->list[Path]:
         mail_path.append(file)
     return mail_path
 def run():
+    logging_settings()
+    logger.info("Программа запущена")
     parser=create_parser()
     args=parser.parse_args()
     if len(sys.argv)==1:
+        logger.info("Отсутствуют аргументы. Выведено описание команд")
         print("Доступные команды:")
         parser.print_help()
         return 0
@@ -52,11 +58,15 @@ def run():
     classifier=Classifier()
     file_parser=FileParser()
     p=Processor(classifier,file_parser)
+    logger.info("Начата обработка писем через процессор")
     p.processFolder(args.input, args.output)
     if args.stats:
+        logger.info("Запрашивается статистика по всем категориям")
         get_stats(args.output)
+        logger.info("Статистика выведена")
         return 0
     if args.count:
+        logger.info(f"Запрашивается количество писем в {args.count}")
         count=count_mails_in_category(args.output, args.count)
         print(f"В категории {args.count}: {count} писем")
         return 0
