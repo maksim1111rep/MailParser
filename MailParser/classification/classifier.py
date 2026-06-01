@@ -6,6 +6,7 @@ from dataclasses import dataclass
 class Classifier:
     weightSubject = 5
     weightBody = 1
+    weightSender = 3
 
     def __init__(self):
         self.keywords = CATEGORY_KEYWORDS
@@ -23,6 +24,10 @@ class Classifier:
             bodyLower = mail.body.lower()
         else:
             bodyLower = ''
+        if mail.sender:
+            senderLower = mail.body.lower()
+        else:
+            senderLower = ''
         for category, markers in self.keywords.items():
             for marker in markers:
                 markerLower = marker.lower()
@@ -30,6 +35,8 @@ class Classifier:
                     scores[category] += self.weightSubject
                 if markerLower in bodyLower:
                     scores[category] += self.weightBody
+                if markerLower in senderLower:
+                    scores[category] += self.weightSender
         max_score = max(scores.values()) if scores else 0
         if max_score == 0:
             return Category.UNKNOWN
