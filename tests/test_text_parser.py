@@ -1,5 +1,5 @@
 import pytest
-from MailParser.text_parser import parse
+from MailParser.parser.text_parser import parse
 
 class TestTextParserSender:
     def test_english_from(self):
@@ -22,7 +22,7 @@ class TestTextParserReceiver:
 class TestTextParserDate:
     def test_english_date(self):
         mail = parse("Date: 27.12.2023 15:17")
-        assert mail.date == "29.09.2023 08:16"
+        assert mail.date == "27.12.2023 15:17"
         
     def test_russian_date(self):
         mail = parse("Дата: 25.10.2023 14:15")

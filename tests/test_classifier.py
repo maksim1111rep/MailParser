@@ -1,6 +1,6 @@
 import pytest
 
-from MailParser.classifier import Classifier
+from MailParser.classification.classifier import Classifier
 from MailParser.domain.mail import Mail
 from MailParser.domain.category import Category
 

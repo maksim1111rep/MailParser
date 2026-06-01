@@ -1,7 +1,7 @@
 import pytest
 
 import json
-from file_parser import FileParser
+from MailParser.parser.file_parser import FileParser
 
 @pytest.fixture
 def file_parser():
