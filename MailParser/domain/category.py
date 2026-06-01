@@ -5,7 +5,7 @@ class Category(Enum):
     SPAM = "spam"
     INCIDENTS = "incidents"
     REQUEST = "request"
-    FINANCE = "average"
+    FINANCE = "finance"
     UNKNOWN = "unknown"
 
 
@@ -57,4 +57,20 @@ CATEGORY_SUBJECTS = {
     Category.FINANCE: ['уточнение', 'по', 'оплате', 'договора', 'за', 'документы', 'закрывающие', 'правки', 'финальная', 'инструкция',
                             'оплату', 'счёт', '№','fwd:', 'декабрь', 'апрель', 'работ', 'выполненных',
                             'акт', 'согласование', 'инструкцияу', 'техническое', 'договор']
+}
+
+CATEGORY_WEIGHTS_BODY = {
+    Category.SPAM: 0.23,
+    Category.INCIDENTS: 0.36,
+    Category.REQUEST: 0.64,
+    Category.FINANCE: 0.94,
+    Category.UNKNOWN: 0
+}
+
+CATEGORY_WEIGHTS_SUBJECT = {
+    Category.SPAM: 0.5,
+    Category.INCIDENTS: 0.48,
+    Category.REQUEST: 0.37,
+    Category.FINANCE: 0.365,
+    Category.UNKNOWN: 0
 }
