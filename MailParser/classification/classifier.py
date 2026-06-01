@@ -1,5 +1,5 @@
 from MailParser.domain.mail import Mail
-from MailParser.domain.category import CATEGORY_KEYWORDS, CATEGORY_PRIORITY, Category
+from MailParser.domain.category import CATEGORY_KEYWORDS, CATEGORY_PRIORITY, CATEGORY_SENDERS, CATEGORY_SUBJECTS, Category
 from dataclasses import dataclass
 
 @dataclass
@@ -10,6 +10,8 @@ class Classifier:
 
     def __init__(self):
         self.keywords = CATEGORY_KEYWORDS
+        self.senders = CATEGORY_SENDERS
+        self.subjects = CATEGORY_SUBJECTS
         self.categoryPriority = CATEGORY_PRIORITY
 
     def classify(self, mail: Mail) -> Category:
@@ -31,10 +33,16 @@ class Classifier:
         for category, markers in self.keywords.items():
             for marker in markers:
                 markerLower = marker.lower()
-                if markerLower in subjectLower:
-                    scores[category] += self.weightSubject
                 if markerLower in bodyLower:
                     scores[category] += self.weightBody
+        for category, markers in self.subjects.items():
+            for marker in markers:
+                markerLower = marker.lower()
+                if markerLower in subjectLower:
+                    scores[category] += self.weightSubject
+        for category, markers in self.senders.items():
+            for marker in markers:
+                markerLower = marker.lower()
                 if markerLower in senderLower:
                     scores[category] += self.weightSender
         max_score = max(scores.values()) if scores else 0
