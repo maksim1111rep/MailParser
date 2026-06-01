@@ -3,7 +3,7 @@ if [ ! -d "inbox" ]; then
     exit 1
 fi
 echo "Запуск приложения"
-python3 -m MailParser
+python3 -m MailParser -i inbox -o output -st
 if [ $? -eq 0 ]; then
     echo "Приложение успешно завершило работу"
 else
