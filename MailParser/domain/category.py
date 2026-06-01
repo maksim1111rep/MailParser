@@ -7,6 +7,7 @@ class Category(Enum):
     REQUEST = "request"
     FINANCE = "finance"
     UNKNOWN = "unknown"
+    BROKEN = "broken"
 
 
 CATEGORY_PRIORITY = {
@@ -15,6 +16,7 @@ CATEGORY_PRIORITY = {
     Category.REQUEST: 2,
     Category.FINANCE: 1,
     Category.UNKNOWN: 0,
+    Category.BROKEN: -1
 }
 
 CATEGORY_KEYWORDS = {
@@ -63,14 +65,12 @@ CATEGORY_WEIGHTS_BODY = {
     Category.SPAM: 0.23,
     Category.INCIDENTS: 0.36,
     Category.REQUEST: 0.64,
-    Category.FINANCE: 0.94,
-    Category.UNKNOWN: 0
+    Category.FINANCE: 0.94
 }
 
 CATEGORY_WEIGHTS_SUBJECT = {
     Category.SPAM: 0.5,
     Category.INCIDENTS: 0.48,
     Category.REQUEST: 0.37,
-    Category.FINANCE: 0.365,
-    Category.UNKNOWN: 0
+    Category.FINANCE: 0.365
 }

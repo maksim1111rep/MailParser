@@ -18,6 +18,10 @@ class Processor:
         if not inputDir.exists():
             raise FileNotFoundError(f"Папка {input_path} не существует")
 
+        if outputDir.exists():
+            if inputDir.resolve() == outputDir.resolve():
+                raise ValueError("Папки input и output не должны совпадать")
+            shutil.rmtree(outputDir)
         outputDir.mkdir(parents=True, exist_ok=True)
 
         files = [file for file in inputDir.iterdir() if file.is_file()]
@@ -28,7 +32,7 @@ class Processor:
                 self.copyToCategory(file, category, outputDir)
 
             except ValueError as e:
-                category =  Category.UNKNOWN
+                category =  Category.BROKEN
                 self.copyToCategory(file, category, outputDir)
 
     def copyToCategory(self, sourcePath, category, outputDir):
