@@ -5,7 +5,7 @@ class Category(Enum):
     SPAM = "spam"
     INCIDENTS = "incidents"
     REQUEST = "request"
-    FINANCE = "average"
+    FINANCE = "finance"
     UNKNOWN = "unknown"
 
 
