@@ -2,6 +2,7 @@ import shutil
 from pathlib import Path
 from MailParser.parser.file_parser import FileParser
 from MailParser.classification.classifier import Classifier
+from MailParser.domain.category import Category
 from dataclasses import dataclass
 @dataclass
 class Processor:
@@ -24,14 +25,14 @@ class Processor:
             try:
                 mail = self.parser.parse(file)
                 category = self.classifier.classify(mail)
-                self.copyToCategory(file, category, outputDir, mail)
-
-            except ValueError as e:
-                category = "Unknown"
                 self.copyToCategory(file, category, outputDir)
 
-    def сopyToCategory(self, sourcePath, category, outputDir):
-        categoryDir = outputDir / category
+            except ValueError as e:
+                category =  Category.UNKNOWN
+                self.copyToCategory(file, category, outputDir)
+
+    def copyToCategory(self, sourcePath, category, outputDir):
+        categoryDir = outputDir / category.value
         categoryDir.mkdir(exist_ok=True)
         targetPath = categoryDir / sourcePath.name
         shutil.copy2(sourcePath, targetPath)
