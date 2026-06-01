@@ -1,18 +1,18 @@
 from MailParser.domain.mail import Mail
-from MailParser.domain.category import CATEGORY_KEYWORDS, CATEGORY_PRIORITY, CATEGORY_SENDERS, CATEGORY_SUBJECTS, Category
+from MailParser.domain.category import CATEGORY_KEYWORDS, CATEGORY_PRIORITY, CATEGORY_SENDERS, CATEGORY_SUBJECTS, CATEGORY_WEIGHTS_BODY, CATEGORY_WEIGHTS_SUBJECT, Category
 from dataclasses import dataclass
 
 @dataclass
 class Classifier:
-    weightSubject = 5
-    weightBody = 1
-    weightSender = 3
+    weightSender = 1
 
     def __init__(self):
         self.keywords = CATEGORY_KEYWORDS
         self.senders = CATEGORY_SENDERS
         self.subjects = CATEGORY_SUBJECTS
         self.categoryPriority = CATEGORY_PRIORITY
+        self.weightSubject = CATEGORY_WEIGHTS_SUBJECT
+        self.weightBody = CATEGORY_WEIGHTS_BODY
 
     def classify(self, mail: Mail) -> Category:
         if not mail.subject and not mail.body:
@@ -27,19 +27,21 @@ class Classifier:
         else:
             bodyLower = ''
         if mail.sender:
-            senderLower = mail.body.lower()
+            senderLower = mail.sender.lower()
         else:
             senderLower = ''
         for category, markers in self.keywords.items():
+            weight = self.weightBody.get(category, 0)
             for marker in markers:
                 markerLower = marker.lower()
                 if markerLower in bodyLower:
-                    scores[category] += self.weightBody
+                    scores[category] += weight
         for category, markers in self.subjects.items():
+            weight = self.weightSubject.get(category, 0)
             for marker in markers:
                 markerLower = marker.lower()
                 if markerLower in subjectLower:
-                    scores[category] += self.weightSubject
+                    scores[category] += weight
         for category, markers in self.senders.items():
             for marker in markers:
                 markerLower = marker.lower()
